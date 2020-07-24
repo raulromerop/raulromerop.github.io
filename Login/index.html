@@ -1,143 +1,145 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Omnavi</title>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-    <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAsr8VpvrA-1sePNcPLH0z3p48ga_zWSYQ&callback=initMap&libraries=&v=weekly"
-      defer
-    ></script>
-    <style type="text/css">
+<html lang="en">
 
-    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap");  
+<!--  -->
+<head>
+    <meta charset="UTF-8">
+    <meta name = "viewport" content = "width=device-width", initial-scale="1.0">
 
-      #map {
-          height: 60%;
-      } 
+    <script 
+        src="https://kit.fontawesome.com/64d58efce2.js"
+        crossorigin="anonymous">
+    </script>
 
-      html,
-      body {
-        height: 750px;
-        margin: 100px;
-        padding: 0;
-        font-family: 'Poppins', sans-serif;
-        overflow: hidden;
-      }
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
 
-      .omnavi{
-      position: absolute;
-      top: -45px;
-      margin-bottom: 40px;
-      right: 36.5%;
-      font-size: 8rem;
-      font-weight: 1000;
-      color: white;
-      -webkit-text-stroke: 2px #6693f5;
-}
+    <title>Omnavi Login</title>
 
-    </style>
+    <!-- Se exporta la "stylesheet" (así se le llama el archivo CSS) -->
+    <link rel="stylesheet" href="loginstyle.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="forms-container">
+            <div class="signin-signup">
+            <form action="" class="sign-in-form" id="form-id" method="post" name="myform">
+                <h1 class="omnavi">Omnavi</h1>
+                <h2 class="title">Iniciar Sesión</h2>
+
+                <!-- Se establece y establece las casillas del primer input, el usuario -->
+                <!-- "fas fa-user" es el ID del ícono que será visualizado al lado de esta -->
+                <!-- En "input", el "placeholder" se usa para establecer lo que quiere que se diga en las casillas donde se ponen los datos -->
+                <div class="input-field">
+                    <i class="fas fa-user"></i>
+                    <input type="text" name="username" id="username" placeholder="Usuario"/>
+                </div>
+
+                <!-- Gracias a que se pone "type='password'", el input será escondido y no se puede copiar ni revelar -->
+                <div class="input-field">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" name="password" id="password" placeholder="Contraseña"/>
+                </div>
+
+                <!-- El "value" acá significa lo que este botón tendrá como texto -->
+                <input type="button" value="Iniciar" id="logging" onclick="validate()" class="btn solid"/>
+
+                <p class="social-text">Inicia sesión con otra plataforma</p>
+
+                <div class="social-media">
+                    <a href="https://facebook.com" class="social-icon">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="https://twitter.com" class="social-icon">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="https://google.com" class="social-icon">
+                        <i class="fab fa-google"></i>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </form>
+        
+            <!-- Aquí se copia el diseño del formulario anterior, pero esta vez será para registrarse en vez de iniciar -->
+            <form action="" class="sign-up-form">
+            <h2 class="title">Registrarse</h2>
+
+            <div class="input-field">
+                <i class="fas fa-user"></i>
+                <input type="text" placeholder="Usuario"/>
+            </div>
+
+            <div class="input-field">
+                <i class="fas fa-envelope"></i>
+                <input type="text" placeholder="Correo"/>
+            </div>
+
+            <div class="input-field">
+                <i class="fas fa-lock"></i>
+                <input type="password" placeholder="Contraseña"/>
+            </div>
+
+            <input type="submit" value="Registrar" id="submit" class="btn solid"/>
+
+            <p class="social-text">Registrate con otra plataforma</p>
+
+            <div class="social-media">
+                <a href="https://facebook.com" class="social-icon">
+                    <i class="fab fa-facebook"></i>
+                </a>
+                <a href="https://twitter.com" class="social-icon">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="https://google.com" class="social-icon">
+                    <i class="fab fa-google"></i>
+                </a>
+                <a href="#" class="social-icon">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+            </div>
+            </form>
+            </div>
+        </div>
+
+        <div class="panels-container">
+
+            <!-- Creamos dos paneles que contendrán el botón de registrarse o iniciar, e imágenes gráficas para decorar -->
+            <!-- Al usar "panel " en las dos clases, hacemos que se puedan modificar al mismo tiempo en CSS si solo ponemos ".panel{" -->
+            <!-- Si ponemos un espacio entre el nombre de una clase, hacemos que tengan dos nombres con los que pueda ser llamada al modificarla -->
+            <div class="panel left-panel">
+
+                <div class="content">
+                    <h3>¿Nuevo por acá?</h3>
+                    <p>Puedes registrarte con sólo 2 minutos de tu tiempo, 
+                                ¡sé parte de nosotros!</p>
+                    <button class="btn transparent" id="sign-up-btn">Registrarse</button>
+                </div>
+
+                <img src="elementos/place.svg" class="image" alt=""/>
+
+            </div>
+
+            <div class="panel right-panel">
+
+                <div class="content">
+                    <h3>¿Ya eres parte de nosotros?</h3>
+                    <p>
+                    Haz click acá e inicia sesión con tu cuenta. 
+                            ¡Es hora de explorar!
+                    </p>
+                    <button class="btn transparent" id="sign-in-btn">Iniciar</button>
+                </div>
+        
+                <img src="elementos/login.svg" class="image" alt=""/>
+
+            </div>
+
+        </div>
+    </div>
     
-    <script>
-      (function(exports) {
-          "use strict";
-
-        /*
-         * Función que establece que al clickear el mapa se pone una nueva vista 360º.
-        */
-
-        function initMap() {
-          var loca = {
-            lat: 37.869085,
-            lng: -122.254775
-          };
-
-          // Establecer la vista 360º. "exports.panorama" es el parámetro que nos dá la vista panomárica, o sea, en 360º.
-
-          var streetview = new google.maps.StreetViewService();
-          exports.panorama = new google.maps.StreetViewPanorama(
-            document.getElementById("pano")
-          );
-
-          // Aquí se establecen parámetros que exportan los servicios de Maps y de Street View
-
-          // Poner el mapa estableciendo un parámetro
-          exports.map = new google.maps.Map(document.getElementById("map"), {
-            center: loca,
-            zoom: 16,
-            streetViewControl: false
-          });
-
-          // Poner la vista 360º al centro del mapa
-          streetview.getPanorama(
-            {
-              location: loca,
-              radius: 50
-            },
-            processSVData
-          );
-
-          // Buscar un "panorama" de 360º disponible al dar click en una parte del mapa
-          // "getPanorama" nos dá el "pano" (panorama, o sea la foto 360º) más cercano al dar este click
-          // El radio ("radius") en que este se busca es de 50 metros o menos
-          
-          //En esta línea, "event" es el acto de dar click, como se estable justo antes de este
-          exports.map.addListener("click", function(event) {
-            streetview.getPanorama(
-              {
-                location: event.latLng,
-                radius: 50
-              },
-              processSVData
-            );
-          });
-        }
-
-          function processSVData(data, status) {
-            if (status == "OK") {
-              var marker = new google.maps.Marker({
-                position: data.location.latLng,
-                map: exports.map,
-                title: data.location.description
-              });
-
-              // Establecer el Panorama (vista 360º) en el lugar que elegimos
-              exports.panorama.setPano(data.location.pano);
-              // Establecer el tamaño del POV que tendremos
-              exports.panorama.setPov({
-                heading: 270,
-                pitch: 0
-              });
-
-              exports.panorama.setVisible(true);
-              marker.addListener("click", function() {
-                var markerPanoID = data.location.pano;
-                
-
-                exports.panorama.setPano(markerPanoID);
-                exports.panorama.setPov({
-                  heading: 270,
-                  pitch: 0
-                });
-                exports.panorama.setVisible(true);
-              });
-
-            // Mandar un mensaje si esta función dá un error.
-            } else {
-              console.error("Datos sobre esta localización no han sido encontrados.");
-            }
-          }
-          
-          exports.initMap = initMap;
-          exports.processSVData = processSVData;
-        })((this.window = this.window || {}));
-      </script>
-    </head>
-
-  <body>
-    <h1 class="omnavi">Omnavi</h1>
-
-    <div id="map" style="width: 50%; height: 100%;float:left"></div>
-    <div id="pano" style="width: 50%; height: 100%;float:left"></div>
-  </body>  
-
+    <script src="loginmain.js"></script>
+    
+</body>
 </html>

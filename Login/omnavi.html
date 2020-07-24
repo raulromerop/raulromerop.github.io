@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Omnavi</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAsr8VpvrA-1sePNcPLH0z3p48ga_zWSYQ&callback=initMap&libraries=&v=weekly"
+      defer
+    ></script>
+    <style type="text/css">
+
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap");  
+
+      #map {
+          height: 60%;
+      } 
+
+      html,
+      body {
+        height: 750px;
+        margin: 100px;
+        padding: 0;
+        font-family: 'Poppins', sans-serif;
+        overflow: hidden;
+      }
+
+      .omnavi{
+      position: absolute;
+      top: -45px;
+      margin-bottom: 40px;
+      right: 36.5%;
+      font-size: 8rem;
+      font-weight: 1000;
+      color: white;
+      -webkit-text-stroke: 2px #6693f5;
+}
+
+    </style>
+    
+    <script>
+      (function(exports) {
+          "use strict";
+
+        /*
+         * Función que establece que al clickear el mapa se pone una nueva vista 360º.
+        */
+
+        function initMap() {
+          var loca = {
+            lat: 37.869085,
+            lng: -122.254775
+          };
+
+          // Establecer la vista 360º. "exports.panorama" es el parámetro que nos dá la vista panomárica, o sea, en 360º.
+
+          var streetview = new google.maps.StreetViewService();
+          exports.panorama = new google.maps.StreetViewPanorama(
+            document.getElementById("pano")
+          );
+
+          // Aquí se establecen parámetros que exportan los servicios de Maps y de Street View
+
+          // Poner el mapa estableciendo un parámetro
+          exports.map = new google.maps.Map(document.getElementById("map"), {
+            center: loca,
+            zoom: 16,
+            streetViewControl: false
+          });
+
+          // Poner la vista 360º al centro del mapa
+          streetview.getPanorama(
+            {
+              location: loca,
+              radius: 50
+            },
+            processSVData
+          );
+
+          // Buscar un "panorama" de 360º disponible al dar click en una parte del mapa
+          // "getPanorama" nos dá el "pano" (panorama, o sea la foto 360º) más cercano al dar este click
+          // El radio ("radius") en que este se busca es de 50 metros o menos
+          
+          //En esta línea, "event" es el acto de dar click, como se estable justo antes de este
+          exports.map.addListener("click", function(event) {
+            streetview.getPanorama(
+              {
+                location: event.latLng,
+                radius: 50
+              },
+              processSVData
+            );
+          });
+        }
+
+          function processSVData(data, status) {
+            if (status == "OK") {
+              var marker = new google.maps.Marker({
+                position: data.location.latLng,
+                map: exports.map,
+                title: data.location.description
+              });
+
+              // Establecer el Panorama (vista 360º) en el lugar que elegimos
+              exports.panorama.setPano(data.location.pano);
+              // Establecer el tamaño del POV que tendremos
+              exports.panorama.setPov({
+                heading: 270,
+                pitch: 0
+              });
+
+              exports.panorama.setVisible(true);
+              marker.addListener("click", function() {
+                var markerPanoID = data.location.pano;
+                
+
+                exports.panorama.setPano(markerPanoID);
+                exports.panorama.setPov({
+                  heading: 270,
+                  pitch: 0
+                });
+                exports.panorama.setVisible(true);
+              });
+
+            // Mandar un mensaje si esta función dá un error.
+            } else {
+              console.error("Datos sobre esta localización no han sido encontrados.");
+            }
+          }
+          
+          exports.initMap = initMap;
+          exports.processSVData = processSVData;
+        })((this.window = this.window || {}));
+      </script>
+    </head>
+
+  <body>
+    <h1 class="omnavi">Omnavi</h1>
+
+    <div id="map" style="width: 50%; height: 100%;float:left"></div>
+    <div id="pano" style="width: 50%; height: 100%;float:left"></div>
+  </body>  
+
+</html>
