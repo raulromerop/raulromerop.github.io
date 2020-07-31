@@ -1,0 +1,188 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap");
+
+/*  */
+
+*, *::before, *::after{
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Se definen los 3 colores que se le aplicarán al fondo creando 3 variables usando la función "--hue": azul, rojo y verde */
+:root {
+  --hue-neutral: 200;
+  --hue-wrong: 0;
+  --hue-correct: 145;
+}
+
+body {
+    --hue: var(--hue-neutral);
+    padding: 0;
+    margin: 0;
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    justify-content: center;
+    align-items: center;
+    /* Este "--hue" puede ser cambiado por cualquier de los 3 var "--hue" que fueron creados antes */
+    background-color: hsl(var(--hue), 100%, 20%);
+    overflow: hidden;
+}
+
+/* Todo funcionará en que se crearán clases de "correct" o "wrong" dependiendo de las respuestas correctas o incorrectas.
+   Cuando sea correcto, se tornará verde "--hue-correct", si es incorrect se hará rojo "--hue-wrong" */
+
+body.correct {
+    --hue: var(--hue-correct);
+}
+
+body.wrong {
+    --hue: var(--hue-wrong);
+}
+
+.container {
+    width: 800px;
+    height: 300px;
+    max-width: 80%;
+    background-color: white;
+    border-radius: 5px;
+    padding: 10px;
+    /* Le dá una sombrita al cuadro. Estos valores van así: X (lados), Y (abajo y arriba), blur, spread (qué tan lejos llega) */
+    box-shadow: 0 0 10px 2px;
+}
+
+.question{
+    font-size: 25px;
+    font-weight: 600 bold;
+    margin-bottom: -10px;
+}
+
+.logo {
+    position: absolute;
+    width: 500px;
+    max-width: 80%;
+    height: 280px;
+    bottom: 70%;
+    left: 37%;
+    border-radius: 20px;
+}
+
+.btn-grid {
+    display: grid;
+    /* Compacta los botones en 2 columnas repetidas, teniendo un width automático para que se adapte al espacio */
+    grid-template-columns: repeat(2, auto);
+    gap: 10px;
+    /* Margen de 20px en las propiedades de X-Y, pero sin cambios en Y */
+    margin: 20px 0;
+}
+
+.btn {
+    --hue: var(--hue-neutral);
+    border: 2.5px solid hsl(var(--hue), 100%, 30%);
+    background-color: hsl(var(--hue), 100%, 50%);
+    border-radius: 5px;
+    /* Crea un poco de espacio entre las letras y sus bordes */
+    padding: 25px 100px;
+    color: white;
+    outline: none;
+    font-size: 1.5rem;
+}
+
+.btn:hover{
+    border-color: black;
+    color: #d0f0c0;
+}
+
+.btn.correct{
+    --hue: var(--hue-correct);
+    color: black;
+}
+
+.btn.wrong{
+    --hue: var(--hue-wrong);
+}
+
+.start-btn {
+    font-size: 2rem;
+    font-weight: bold;
+    /* Como se ve aquí, para cambiar el tamaño de un botón sin cambiar su letra, se usa padding, o sea el espacio entre letra y bordes (al menos en buttons) */
+    padding: 30px 60px;
+    margin-top: 72px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.next-btn {
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 10px 20px;
+    margin-top: 12px;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hide {
+    display: none;
+}
+
+@media (max-width: 870px) {
+    html {
+        overflow: hidden;
+    }
+
+    body {
+        padding: 0;
+        margin: 0;
+        display: flex;
+        height: 100vh;
+        width: 100vw;
+        justify-content: center;
+        align-items: center;
+        background-color: hsl(var(--hue), 100%, 20%);
+    }
+
+    .question{
+        margin-top: 75px;
+        font-size: 10px;
+        font-weight: 350 bold;
+        margin-bottom: -10px;
+    }
+    
+
+    .container{
+        width: 700px;
+        height: 450px;
+        padding: 100px -15px 100px 100px;
+    }
+
+    .logo {
+        position: absolute;
+        width: 180px;
+        height: 95px;
+        top: 5%;
+        left: 2.5%;
+    }
+
+    .start-btn {
+        font-size: .8rem;
+        font-weight: bold;
+        padding: 10px 30px;
+        margin-top: 40px;
+    }
+
+    .next-btn {
+        font-size: 0.75rem;
+        padding: 5px 10px;
+        margin-top: 6px;
+    }
+
+    .btn{
+        padding: 10px 30px;
+        font-size: .5rem;
+        left: 15%;
+    }
+}

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Omnavi</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAsr8VpvrA-1sePNcPLH0z3p48ga_zWSYQ&callback=initMap&libraries=&v=weekly"
+      defer
+    ></script>
+    
+    <style type="text/css">
+    
+
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap");  
+
+      #map,
+      #pano {
+        height: 100%;
+        z-index: 4;
+      }
+
+      #map {
+        width: 50%;
+      }
+
+      #pano {
+        width: 50%;
+        left: 50%;
+        bottom: 100%;
+      }
+
+      .container {
+        position: relative;
+        height: 800px;
+        top: 70px;
+        padding: 25px 100px 25px 100px;
+        background: linear-gradient(-30deg, #3cb043, #6693f5);
+        border-radius: 100px;
+        overflow: hidden;
+        z-index: 3;
+        transition: 1.5s ease-in-out;
+      }
+
+      form{
+        display: flex;
+        flex-direction: row;
+        padding: 0 5rem;
+        top: 40px;
+        bottom: 86%;
+        left: 50%;
+        grid-row: 1 / 2;
+        grid-column: 1 / 2;
+      }
+
+      .omnavi{
+      position: absolute;
+      max-width: 600px;
+      left: 43%;
+      height: 125px;
+      z-index: 5;
+      transition: .5s ease-in-out;
+      }
+
+      .omnavi:hover{
+        transform: translateY(-10%);
+      }
+
+      .btn{
+        position: relative;
+        border: 1px solid #6693f5;
+        background: none;
+        width: 160px;
+        height: 70px;
+        color: #6693f5;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+        font-size: 1.2rem;
+        border-radius: 54px;
+        left: 70%;
+        top: 35px;
+        transition: .4s ease-in-out;
+      }
+
+      .btn:hover{
+        border-color: white;
+        color: white;
+        background-color: #de3963;
+      }
+
+      @media (max-width: 870px){
+        .container{
+            min-height: 2000px;
+            height: 100vh;
+        }
+    
+        /* "initial" sirve para resetear a los valores default */
+        /* Así se elimina cualquier cambio previo que se le haya hecho a estas propiedades */
+        .container:before{
+            content: '';
+            width: 1500px;
+            height: 1500px;
+            left: 30%;
+            bottom: 68%;
+            right: initial;
+            top: initial;
+        }
+    
+        .omnavi {
+            width: 290px;
+            height: 150px;
+        }
+      }
+    </style>
+    
+    <script>
+      (function(exports) {
+          "use strict";
+
+        /*
+         * Función que establece que al clickear el mapa se pone una nueva vista 360º.
+        */
+
+        function initMap() {
+          var loca = {
+            lat: 14.5833665,
+            lng: -91.1864077
+          };
+
+          // Establecer la vista 360º. "exports.panorama" es el parámetro que nos dá la vista panomárica, o sea, en 360º.
+
+          var streetview = new google.maps.StreetViewService();
+          exports.panorama = new google.maps.StreetViewPanorama(
+            document.getElementById("pano")
+          );
+
+          // Aquí se establecen parámetros que exportan los servicios de Maps y de Street View
+
+          // Poner el mapa estableciendo un parámetro
+          exports.map = new google.maps.Map(document.getElementById("map"), {
+            center: loca,
+            zoom: 16,
+            streetViewControl: false
+          });
+
+          // Poner la vista 360º al centro del mapa
+          streetview.getPanorama(
+            {
+              location: loca,
+              radius: 50
+            },
+            processSVData
+          );
+
+          // Buscar un "panorama" de 360º disponible al dar click en una parte del mapa
+          // "getPanorama" nos dá el "pano" (panorama, o sea la foto 360º) más cercano al dar este click
+          // El radio ("radius") en que este se busca es de 50 metros o menos
+          
+          //En esta línea, "event" es el acto de dar click, como se estable justo antes de este
+          exports.map.addListener("click", function(event) {
+            streetview.getPanorama(
+              {
+                location: event.latLng,
+                radius: 50
+              },
+              processSVData
+            );
+          });
+        }
+
+          function processSVData(data, status) {
+            if (status == "OK") {
+              var marker = new google.maps.Marker({
+                position: data.location.latLng,
+                map: exports.map,
+                title: data.location.description
+              });
+
+              // Establecer el Panorama (vista 360º) en el lugar que elegimos
+              exports.panorama.setPano(data.location.pano);
+              // Establecer el tamaño del POV que tendremos
+              exports.panorama.setPov({
+                heading: 270,
+                pitch: 0
+              });
+
+              exports.panorama.setVisible(true);
+              marker.addListener("click", function() {
+                var markerPanoID = data.location.pano;
+                
+
+                exports.panorama.setPano(markerPanoID);
+                exports.panorama.setPov({
+                  heading: 270,
+                  pitch: 0
+                });
+                exports.panorama.setVisible(true);
+              });
+
+            // Mandar un mensaje si esta función dá un error.
+            } else {
+              console.error("Datos sobre esta localización no han sido encontrados.");
+            }
+          }
+          
+          exports.initMap = initMap;
+          exports.processSVData = processSVData;
+        })((this.window = this.window || {}));
+      </script>
+    </head>
+
+  <body>
+  <div>
+    <form action="">
+      <img src="elementos/omnavi.png" class="omnavi" alt="">
+      <input type="button" class="btn solid" id="quiz-btn" value="¡Ir a quiz!" onclick="window.location.href='quiz.html';"/>
+    </form>
+  </div> 
+
+    <div class="container">
+      <div id="map" class="mapo"></div>
+      <div id="pano" class="panao"></div>
+    </div>
+  </body>  
+
+  <script src="loginmain.js"></script>
+
+</html>
